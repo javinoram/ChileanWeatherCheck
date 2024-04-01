@@ -23,15 +23,15 @@ until [ ${seleccion} == 6 ]; do
     #casos segun la seleccion
     clear
     case "$seleccion" in 
-        1) echo "opcion 1" && source weather.sh "Cenmeteoique"
+        1) source weather.sh "Cenmeteoique"
         ;;
-        2) echo "opcion 2" && source weather.sh "Cenmeteovalp"
+        2) source weather.sh "Cenmeteovalp"
         ;;
-        3) echo "opcion 3" && source weather.sh "Cenmeteotalc"
+        3) source weather.sh "Cenmeteotalc"
         ;;
-        4) echo "opcion 4" && source weather.sh "Cenmeteopmo"
+        4) source weather.sh "Cenmeteopmo"
         ;;
-        5) echo "opcion 5" && source weather.sh "Cenmeteopar"
+        5) source weather.sh "Cenmeteopar"
         ;;
         6) continue
         ;;
