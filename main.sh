@@ -18,6 +18,7 @@ EOF
 #texto_menu
 seleccion=100
 until [ ${seleccion} == 6 ]; do
+    clear
     texto_menu
 
     #Mostrar texto del menu para dejar al usuario elegir
@@ -40,5 +41,4 @@ until [ ${seleccion} == 6 ]; do
         *) echo "Opcion no valida"
         ;;
     esac
-    clear
 done
