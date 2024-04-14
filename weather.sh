@@ -2,14 +2,49 @@
 
 #Mostrar las temperaturas de la zona elegida
 function temperatura () {
-    temperaturas=$(curl -s $locality | grep -Eo "TEMPERATURA [A-Za-z0-9]+ [A-Za-z0-9]+: [0-9]+°C.")
-    variable=1
-    echo "Temperatura extraida de $locality"
-    until [ ${variable} == 3 ]; do
-        echo $( echo $temperaturas | awk -v var=$(($variable)) -F '.' '{print $var}' )
-        variable=$(($variable+1))
-    done
+    #Descargar .txt y almacenarlo en memoria
+    archivo=$(curl -s "$locality" )
+
+    #Usando REGEX entraer la informacion de interes y agregando excepciones
+    #en caso de que no exista la informacion buscada
+    situacion=$(echo "$archivo" | grep -A 1 -m 1 -Eo "SITUACION SINOPTICA:")
+    echo "######"
+    #Comprueba si la cadena esta vacia
+    if [ -z "$situacion" ]; then
+        echo "No se encontro informacion sobre SITUACION SINOPTICA"
+    else
+        echo "$situacion"
+    fi
+
+    pronostico=$(echo "$archivo" | grep -A 1 -m 1 -Eo "PRONOSTICO:")
+    echo "######"
+    if [ -z "$pronostico" ]; then
+        echo "No se encontro informacion sobre PRONOSTICO"
+    else
+        echo "$pronostico"
+    fi
+
+    tempmax=$(echo "$archivo" | grep -m 1 -E "TEMPERATURA MAXIMA PROBABLE: [0-9]+")
+    echo "######"
+    if [ -z "$tempmax" ]; then
+        echo "No se encontro informacion sobre TEMPERATURA MAXIMA PROBABLE"
+    else
+        echo "$tempmax"
+    fi
+
+    tempmin=$(echo "$archivo" | grep -m 1 -E "TEMPERATURA MINIMA PROBABLE: [0-9]+")
+    echo "######"
+    if [ -z "$tempmin" ]; then
+        echo "No se encontro informacion sobre TEMPERATURA MINIMA PROBABLE"
+    else
+        echo "$tempmin"
+    fi
+
+    echo "######"
+    echo "Datos extraidos de $locality"
+    echo "######"
 }
+
 
 #Mostrar por pantalla las posibles opciones
 function menu_opciones () {
@@ -29,7 +64,7 @@ url="http://web.directemar.cl/met/jturno/PRONOSTICOS/$centro/72/[A-Za-z0-9]+.txt
 #Extraccion de las localidades disponibles
 opciones=$(curl -s https://web.directemar.cl/met/jturno/indice/index.htm | grep -Eo "$url")
 
-clear
+#clear
 menu_opciones
 
 #Seleccion de una de las opciones
@@ -40,10 +75,6 @@ parada=$(($variable))
 until [ ${seleccion} == ${parada} ]; do
     read seleccion
     case $seleccion in 
-        #$seleccion -gt 0 && $((${parada}-1)) -lt $seleccion )
-        #    locality="$( echo $opciones | awk -v var=$(($seleccion)) -F ' ' '{print $var}' )"
-        #    temperatura
-        #;;
         ${parada}) 
             continue
         ;;
