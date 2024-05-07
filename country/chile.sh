@@ -36,7 +36,9 @@ until [ ${seleccion} == ${parada} ]; do
 	*) if [[ ${seleccion} -gt -1 && ${seleccion} -lt $((${parada}-1)) ]]; then
 	    urlparce="https://climatologia.meteochile.gob.cl/application/servicios/getDatosRecientesEma/${codigos[$((seleccion))]}?usuario=correo@correo.cl&token=apiKey_personal"
 	    wget -q --no-check-certificate -O country/salida.json "$urlparce"
-	    source country/functions.sh country/salida.json 
+	    texto=$(cat country/salida.json)
+	    primer=$(echo "$texto" | grep -Eo '\"temperatura\":\"[1-9]+\.[1-9]' | head -n1 )
+	    echo "$primer"
 	    rm country/salida.json
 	else
             echo "Opcion no valida"
