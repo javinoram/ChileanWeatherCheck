@@ -1,42 +1,32 @@
 #!/bin/bash
 function texto_menu () {
     cat << EOF
-Bienvenido, selecciones un centro meteorologico:
+Bienvenido, selecciona un país:
 
-    1) Centro Meteorológico de Iquique.
-    2) Centro Meteorológico de Valparaíso.
-    3) Centro Meteorológico de Talcahuano.
-    4) Centro Meteorológico de Puerto Montt.
-    5) Centro Meteorológico de Punta Arenas.
-    6) Salir.
+    1) Chile.
+    2) Argentina.
+    3) Salir.
 
-    Ingresa una opcion (1-6):
+    Ingresa una opcion (1-3):
 EOF
 }
 
 
-#texto_menu
 seleccion=100
-until [ ${seleccion} == 6 ]; do
-    clear
+exitval=3
+
+until [ ${seleccion} == ${exitval} ]; do
     texto_menu
 
-    #Mostrar texto del menu para dejar al usuario elegir
     read seleccion
 
     #casos segun la seleccion
     case "$seleccion" in 
-        1) source weather.sh "Cenmeteoique"
+        1) source country/chile.sh
         ;;
-        2) source weather.sh "Cenmeteovalp"
+        2) source country/argentina.sh 
         ;;
-        3) source weather.sh "Cenmeteotalc"
-        ;;
-        4) source weather.sh "Cenmeteopmo"
-        ;;
-        5) source weather.sh "Cenmeteopar"
-        ;;
-        6) continue
+        3) continue
         ;;
         *) echo "Opcion no valida"
         ;;
